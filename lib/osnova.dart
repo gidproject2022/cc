@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stick/constains/colors.dart';
 import 'package:stick/screens/add_screen.dart';
-import 'package:stick/screens/home_screen.dart';
+import 'package:stick/screens/home_screen/home_screen.dart';
 import 'package:stick/screens/profile_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -31,41 +31,43 @@ class _OsnovaState extends State<Osnova> {
           currentIndex: currentIndex,
           selectedFontSize: 0,
           unselectedFontSize: 0,
+          unselectedItemColor: primaryBlackColor,
           iconSize: 40,
           onTap: (index) => setState(() {
             currentIndex = index;
           }),
+          backgroundColor: primaryWhiteColor,
           items: [
             BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(
                 'assets/icons/home.svg',
-                color: activeItemColor,
+                color: primaryOrangeColor,
               ),
               icon: SvgPicture.asset(
                 'assets/icons/home.svg',
-                color: unactiveItemColor,
+                color: primaryBlackColor,
               ),
               label: "Home",
             ),
             BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(
                 'assets/icons/add.svg',
-                color: activeItemColor,
+                color: primaryOrangeColor,
               ),
               icon: SvgPicture.asset(
                 'assets/icons/add.svg',
-                color: unactiveItemColor,
+                color: primaryBlackColor,
               ),
               label: "Add",
             ),
             BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(
                 'assets/icons/profile.svg',
-                color: activeItemColor,
+                color: primaryOrangeColor,
               ),
               icon: SvgPicture.asset(
                 'assets/icons/profile.svg',
-                color: unactiveItemColor,
+                color: primaryBlackColor,
               ),
               label: "Profile",
             ),
