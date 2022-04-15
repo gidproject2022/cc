@@ -53,6 +53,7 @@ class _AutorizationScreenState extends State<AutorizationScreen> {
               height: MediaQuery.of(context).size.height * 0.85,
               width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 30,
