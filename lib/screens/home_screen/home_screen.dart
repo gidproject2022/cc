@@ -1,40 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stick/constains/colors.dart';
+import 'package:stick/screens/detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class Article {
-  int? articleId;
-  String? title;
-  String? description;
-  String? url;
-  String? athorName;
-  String? uid;
-
-  Article._({
-    this.title,
-    this.description,
-    this.url,
-    this.articleId,
-    this.athorName,
-    this.uid,
-  });
-
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return Article._(
-        title: json['title'],
-        description: json['description'],
-        url: json['url']);
-  }
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -57,9 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
               horizontal: 28,
             ),
             child: Text(
-              "Моя лента",
+              "Creation Community",
               style: TextStyle(
-                fontFamily: 'Century Gothic Bold',
+                fontFamily: 'Harlow',
                 fontSize: 24,
               ),
             ),
@@ -130,25 +105,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: GestureDetector(
                         onTap: () {
-                          if (_width == MediaQuery.of(context).size.width) {
-                            setState(() {
-                              _width = MediaQuery.of(context).size.width * 0.45;
-                              _height =
-                                  MediaQuery.of(context).size.width * 0.45;
-                            });
-                          } else {
-                            setState(() {
-                              _width = MediaQuery.of(context).size.width;
-                              _height = MediaQuery.of(context).size.height;
-                            });
-                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Scaffold(
+                                  body: DetailScreen(
+                                      authorName: snapshot.data!.docs[index]
+                                          .get('author_name'),
+                                      title: snapshot.data!.docs[index]
+                                          .get('title'),
+                                      description: snapshot.data!.docs[index]
+                                          .get('description'),
+                                      uid:
+                                          snapshot.data!.docs[index].get('uid'),
+                                      id: snapshot.data!.docs[index].get('id'),
+                                      url: snapshot.data!.docs[index]
+                                          .get('url'))),
+                            ),
+                            // (route) => false,
+                          );
                           return;
                         },
                         child: Image.network(
                           snapshot.data!.docs[index].get('url'),
 
-                          width: _width,
-                          height: _height,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.width * 0.45,
                           fit: BoxFit.cover,
                           // width: MediaQuery.of(context).size.width * 0.45,
                         ),

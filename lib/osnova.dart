@@ -19,7 +19,7 @@ class _OsnovaState extends State<Osnova> {
     const HomeScreen(),
     const AddScreen(),
     const ProfileScreen(),
-    // ChatScreen()
+    const ChatScreen()
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -72,6 +72,17 @@ class _OsnovaState extends State<Osnova> {
                 color: primaryBlackColor,
               ),
               label: "Profile",
+            ),
+            BottomNavigationBarItem(
+              activeIcon: SvgPicture.asset(
+                'assets/icons/Polygon 1.svg',
+                color: primaryOrangeColor,
+              ),
+              icon: SvgPicture.asset(
+                'assets/icons/Polygon 1.svg',
+                color: primaryBlackColor,
+              ),
+              label: "Chat",
             ),
           ],
         ),

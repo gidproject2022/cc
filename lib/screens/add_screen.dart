@@ -4,14 +4,11 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stick/constains/colors.dart';
-import 'package:stick/main.dart';
 import 'package:stick/osnova.dart';
-import 'package:stick/screens/home_screen/home_screen.dart';
 
 class AddScreen extends StatefulWidget {
   const AddScreen({Key? key}) : super(key: key);
@@ -161,7 +158,7 @@ class _AddScreenState extends State<AddScreen> {
                       'url': singleImage,
                     });
                   } catch (e) {
-                    print(e);
+                    // print(e);
                   }
                   Timer(const Duration(seconds: 3), () {
                     Navigator.pushAndRemoveUntil(

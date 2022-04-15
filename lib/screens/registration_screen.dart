@@ -1,4 +1,6 @@
 // import 'package:email_validator/email_validator.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +23,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final nicknameController = TextEditingController();
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    nicknameController.dispose();
 
     super.dispose();
   }
@@ -158,6 +162,33 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                         ),
                         const SizedBox(
+                          height: 12,
+                        ),
+                        SizedBox(
+                          height: 45,
+                          width: MediaQuery.of(context).size.width * 0.795 - 20,
+                          child: TextFormField(
+                            controller: nicknameController,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 10,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              fillColor: primaryInputColor,
+                              filled: true,
+                              hintText: "Отображаемое имя",
+                              hintStyle: const TextStyle(
+                                color: primaryInputTextColor,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
                           height: 20,
                         ),
                         SizedBox(
@@ -235,6 +266,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+      FirebaseFirestore.instance.collection('users').add({
+        'email': emailController.text.trim(),
+        'nickname': nicknameController.text.trim(),
+      });
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,

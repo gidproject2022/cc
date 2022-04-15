@@ -5,8 +5,6 @@ class Subscriptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(child: Text("sub")),
-    );
+    return const Center(child: Text("sub"));
   }
 }

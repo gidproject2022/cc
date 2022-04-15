@@ -5,8 +5,6 @@ class Populars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(child: Text("Populars")),
-    );
+    return const Center(child: Text("Populars"));
   }
 }
