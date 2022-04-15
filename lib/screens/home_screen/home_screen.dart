@@ -1,10 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stick/constains/colors.dart';
-import 'package:stick/screens/home_screen/populars.dart';
-import 'package:stick/screens/home_screen/recomendations.dart';
-import 'package:stick/screens/home_screen/subscriptions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,15 +12,60 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+class Article {
+  int? articleId;
+  String? title;
+  String? description;
+  String? url;
+  String? athorName;
+  String? uid;
+
+  Article._({
+    this.title,
+    this.description,
+    this.url,
+    this.articleId,
+    this.athorName,
+    this.uid,
+  });
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article._(
+        title: json['title'],
+        description: json['description'],
+        url: json['url']);
+  }
+}
+
 class _HomeScreenState extends State<HomeScreen> {
+  final referenceDatabase = FirebaseDatabase.instance;
+
   final user = FirebaseAuth.instance.currentUser;
+  final database = FirebaseDatabase.instance.ref();
+  @override
+  void initState() {
+    super.initState();
+    _activateListeners();
+  }
+
+  void _activateListeners() {
+    database.child('articles/').onValue.listen((event) {
+      final String? _title = event.snapshot.toString();
+      setState(() {
+        title = _title != null ? _title : 'Error';
+      });
+    });
+  }
+
+  String? title;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           const SizedBox(
             height: 20,
           ),
@@ -77,6 +121,42 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(
             height: 10,
+          ),
+          StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection('articles').snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Text("Нет записей");
+              }
+              return SizedBox(
+                height: snapshot.data!.docs.length * 1000,
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  shrinkWrap: false,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    // return Text(snapshot.data!.docs[index].get('title'));
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Card(
+                        child: Image.network(
+                          snapshot.data!.docs[index].get('url'),
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.width * 0.45,
+                          fit: BoxFit.cover,
+                          // width: MediaQuery.of(context).size.width * 0.45,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
         ],
       ),

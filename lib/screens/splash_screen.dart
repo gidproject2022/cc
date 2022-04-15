@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stick/constains/colors.dart';
 import 'package:stick/osnova.dart';
 import 'package:stick/screens/authentication_screen.dart';
 
@@ -47,15 +48,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.black,
+    return Scaffold(
+      backgroundColor: primaryOrangeColor,
       body: Center(
-        child: Text(
-          "PROJECT",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-          ),
+        child: Image.asset(
+          'assets/images/splash.png',
+          width: MediaQuery.of(context).size.width * 0.6,
         ),
       ),
     );

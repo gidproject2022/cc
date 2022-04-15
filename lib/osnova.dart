@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stick/constains/colors.dart';
 import 'package:stick/screens/add_screen.dart';
+import 'package:stick/screens/charscreen.dart';
 import 'package:stick/screens/home_screen/home_screen.dart';
 import 'package:stick/screens/profile_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,6 +19,7 @@ class _OsnovaState extends State<Osnova> {
     const HomeScreen(),
     const AddScreen(),
     const ProfileScreen(),
+    // ChatScreen()
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
