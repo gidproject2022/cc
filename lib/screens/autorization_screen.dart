@@ -50,7 +50,7 @@ class _AutorizationScreenState extends State<AutorizationScreen> {
                 color: primaryWhiteColor,
                 borderRadius: BorderRadius.circular(5),
               ),
-              height: MediaQuery.of(context).size.height * 0.673,
+              height: MediaQuery.of(context).size.height * 0.85,
               width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
                 children: [
