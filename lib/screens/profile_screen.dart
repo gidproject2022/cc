@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stick/screens/splash_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -20,6 +21,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: const Text("Log Out"),
             onPressed: () {
               FirebaseAuth.instance.signOut();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const Scaffold(
+                            body: SplashScreen(),
+                          )),
+                  (route) => false);
             },
           ),
           Text(user!.email!),

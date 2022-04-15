@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stick/constains/colors.dart';
 import 'package:stick/main.dart';
+import 'package:stick/osnova.dart';
 import 'package:stick/screens/home_screen/home_screen.dart';
 
 class AddScreen extends StatefulWidget {
@@ -98,49 +100,88 @@ class _AddScreenState extends State<AddScreen> {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                XFile? _image = await singleImagePick();
-                if (_image!.path.isNotEmpty) {
-                  singleImage = await uploadImage(_image);
-                  setState(() {});
-                }
-              },
-              child: const Text("Выбрать фото"),
+            const SizedBox(
+              height: 12,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-                try {
-                  final user = FirebaseAuth.instance.currentUser;
-                  FirebaseFirestore.instance.collection('articles').add({
-                    'id': Random().nextInt(1000000000),
-                    'title': titleController.text.trim(),
-                    'description': descriptionController.text.trim(),
-                    'uid': user!.uid,
-                    'author_name': user.email,
-                    'url': singleImage,
-                  });
-
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => const Center(
-                      child: Text("Отправлено"),
+            SizedBox(
+              height: 45,
+              width: MediaQuery.of(context).size.width * 0.795 - 20,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(primaryOrangeColor),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
                     ),
-                  );
-                  Navigator.of(context).pop();
-                } catch (e) {
-                  print(e);
-                }
-              },
-              child: const Text("Опубликовать"),
+                  ),
+                ),
+                onPressed: () async {
+                  XFile? _image = await singleImagePick();
+                  if (_image!.path.isNotEmpty) {
+                    singleImage = await uploadImage(_image);
+                    setState(() {});
+                  }
+                },
+                child: const Text(
+                  "Выбрать изображение",
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            SizedBox(
+              height: 45,
+              width: MediaQuery.of(context).size.width * 0.795 - 20,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(primaryOrangeColor),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                ),
+                onPressed: () async {
+                  try {
+                    final user = FirebaseAuth.instance.currentUser;
+                    FirebaseFirestore.instance.collection('articles').add({
+                      'id': Random().nextInt(1000000000),
+                      'title': titleController.text.trim(),
+                      'description': descriptionController.text.trim(),
+                      'uid': user!.uid,
+                      'author_name': user.email,
+                      'url': singleImage,
+                    });
+                  } catch (e) {
+                    print(e);
+                  }
+                  Timer(const Duration(seconds: 3), () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const Scaffold(
+                                  body: Osnova(),
+                                )),
+                        (route) => false);
+                  });
+                },
+                child: const Text(
+                  "Опубликовать",
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

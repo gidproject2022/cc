@@ -38,24 +38,7 @@ class Article {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final referenceDatabase = FirebaseDatabase.instance;
-
   final user = FirebaseAuth.instance.currentUser;
-  final database = FirebaseDatabase.instance.ref();
-  @override
-  void initState() {
-    super.initState();
-    _activateListeners();
-  }
-
-  void _activateListeners() {
-    database.child('articles/').onValue.listen((event) {
-      final String? _title = event.snapshot.toString();
-      setState(() {
-        title = _title != null ? _title : 'Error';
-      });
-    });
-  }
 
   String? title;
 
@@ -135,19 +118,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
                   ),
-                  shrinkWrap: false,
+                  shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (BuildContext context, int index) {
                     // return Text(snapshot.data!.docs[index].get('title'));
                     return SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
-                      child: Card(
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_width == MediaQuery.of(context).size.width) {
+                            setState(() {
+                              _width = MediaQuery.of(context).size.width * 0.45;
+                              _height =
+                                  MediaQuery.of(context).size.width * 0.45;
+                            });
+                          } else {
+                            setState(() {
+                              _width = MediaQuery.of(context).size.width;
+                              _height = MediaQuery.of(context).size.height;
+                            });
+                          }
+                          return;
+                        },
                         child: Image.network(
                           snapshot.data!.docs[index].get('url'),
-                          width: MediaQuery.of(context).size.width * 0.45,
-                          height: MediaQuery.of(context).size.width * 0.45,
+
+                          width: _width,
+                          height: _height,
                           fit: BoxFit.cover,
                           // width: MediaQuery.of(context).size.width * 0.45,
                         ),
